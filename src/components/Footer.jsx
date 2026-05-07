@@ -1,15 +1,17 @@
-import TaskFilter from "./TasksFilter"
+import TaskFilter from "./TasksFilter";
 
-function Footer() {
-    return ( 
-   <footer className="footer">
-          <span className="todo-count">1 items left</span>
+function Footer({ clearCompleted, activeTasks}) {
+  return (
+    <footer className="footer">
+      <span className="todo-count"> {activeTasks}  items left</span>
 
-       <TaskFilter />
+      
 
-          <button className="clear-completed">Clear completed</button>
-        </footer> 
-        );
-    }
+      <button className="clear-completed" onClick={clearCompleted}>
+        Clear completed
+      </button>
+    </footer>
+  );
+}
 
-    export default Footer
+export default Footer;

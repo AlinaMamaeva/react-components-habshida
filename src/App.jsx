@@ -6,28 +6,17 @@ import Footer from "./components/Footer";
 import { useState } from "react";
 
 import "./App.css";
+import TasksFilter from "./components/TasksFilter";
+import { initialTasks } from "./data/tasks";
 
 function App() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      description: "Completed task",
-      status: "completed",
+  const [tasks, setTasks] = useState(
+    initialTasks.map((task) => ({
+      ...task,
+      createdAt: new Date().toLocaleTimeString(),
       isEditing: false,
-    },
-    {
-      id: 2,
-      description: "Editing task",
-      status: "active",
-      isEditing: false,
-    },
-    {
-      id: 3,
-      description: "Active task",
-      status: "active",
-      isEditing: false,
-    },
-  ]);
+    })),
+  );
 
   const toggleStatus = (id) => {
     setTasks((prev) =>
@@ -35,7 +24,7 @@ function App() {
         task.id === id
           ? {
               ...task,
-              status: task.status === "completed" ? "active" : "completed",
+              completed: !task.completed,
             }
           : task,
       ),
@@ -46,12 +35,10 @@ function App() {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
-  const updateTask = (id, newDescription) => {
+  const updateTask = (id, newTitle) => {
     setTasks((prev) =>
       prev.map((task) =>
-        task.id === id
-          ? { ...task, description: newDescription, isEditing: false }
-          : task,
+        task.id === id ? { ...task, title: newTitle, completed: false } : task,
       ),
     );
   };
@@ -63,19 +50,45 @@ function App() {
     );
   };
 
+  const addTask = (text) => {
+    const newTask = {
+      id: Date.now(),
+      title: text,
+      // status: "active",
+      completed: false,
+      isEditing: false,
+      createdAt: new Date().toLocaleTimeString(),
+    };
+    setTasks((prev) => [...prev, newTask]);
+  };
+
+  const [filter, setFilter] = useState("All");
+
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === "Active") return !task.completed;
+    if (filter === "Completed") return task.completed;
+    return true;
+  });
+  const activeTasks = tasks.filter((task) => !task.completed).length;
+
+  const clearCompleted = () => {
+    setTasks((prev) => prev.filter((task) => !task.completed));
+  };
+
   return (
     <section className="todoapp">
-      <NewTaskForm />
+      <NewTaskForm addTask={addTask} />
 
       <TaskList
-        tasks={tasks}
+        tasks={filteredTasks}
         toggleStatus={toggleStatus}
         deleteTask={deleteTask}
         updateTask={updateTask}
         toggleEdit={toggleEdit}
       />
 
-      <Footer />
+      <Footer clearCompleted={clearCompleted} activeTasks={activeTasks} />
+      <TasksFilter filter={filter} setFilter={setFilter} />
     </section>
   );
 }

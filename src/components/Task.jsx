@@ -3,25 +3,26 @@ import { useState, useEffect } from "react";
 function Task(props) {
   const { task, toggleStatus, deleteTask, updateTask, toggleEdit } = props;
 
-  const [value, setValue] = useState(task.description);
+  const [value, setValue] = useState(task.title);
 
   useEffect(() => {
-    setValue(task.description);
-  }, [task.isEditing]);
+    setValue(task.title);
+  }, [task.title, task.isEditing]);
+
 
   return (
-    <li className={`${task.status} ${task.isEditing ? "editing" : ""}`}>
+    <li className={`${task.completed  ? "completed" : ""} ${task.isEditing ? "editing" : ""}`}>
       <div className="view">
         <input
           className="toggle"
           type="checkbox"
-          checked={task.status === "completed"}
+          checked={task.completed}
           onChange={() => toggleStatus(task.id)}
         />
 
         <label>
-          <span className="description">{task.description}</span>
-          <span className="created">created just now</span>
+          <span className="title">{task.title}</span>
+          <span className="created"> {task.createdAt} </span>
         </label>
 
         <button
@@ -44,6 +45,7 @@ function Task(props) {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               updateTask(task.id, value);
+              toggleEdit(task.id);
             }
           }}
         />
