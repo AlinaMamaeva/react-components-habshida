@@ -1,6 +1,13 @@
 import Task from "./Task";
 
-function TaskList({ tasks, toggleStatus, deleteTask, updateTask, toggleEdit}) {
+function TaskList({
+  tasks,
+  toggleStatus,
+  deleteTask,
+  updateTask,
+  toggleEdit,
+  editingTaskId,
+}) {
   return (
     <section className="main">
       <ul className="todo-list">
@@ -12,6 +19,7 @@ function TaskList({ tasks, toggleStatus, deleteTask, updateTask, toggleEdit}) {
             deleteTask={deleteTask}
             updateTask={updateTask}
             toggleEdit={toggleEdit}
+            isEditing={editingTaskId === task.id}
           />
         ))}
       </ul>

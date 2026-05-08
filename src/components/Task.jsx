@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
 
 function Task(props) {
-  const { task, toggleStatus, deleteTask, updateTask, toggleEdit } = props;
+  const { task, toggleStatus, deleteTask, updateTask, toggleEdit, isEditing } = props;
 
   const [value, setValue] = useState(task.title);
 
   useEffect(() => {
     setValue(task.title);
-  }, [task.title, task.isEditing]);
-
+  }, [task.title]);
 
   return (
-    <li className={`${task.completed  ? "completed" : ""} ${task.isEditing ? "editing" : ""}`}>
+    <li
+      className={`${task.completed ? "completed" : ""} ${isEditing ? "editing" : ""}`}
+      
+      
+    >
+     
       <div className="view">
         <input
           className="toggle"
@@ -36,7 +40,7 @@ function Task(props) {
         ></button>
       </div>
 
-      {task.isEditing && (
+      {isEditing && (
         <input
           type="text"
           className="edit"
@@ -44,9 +48,13 @@ function Task(props) {
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
+            e.preventDefault();
               updateTask(task.id, value);
-              toggleEdit(task.id);
+            
             }
+           if(e.key == "Escape") {
+               toggleEdit(task.id);
+           }
           }}
         />
       )}

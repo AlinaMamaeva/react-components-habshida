@@ -1,6 +1,7 @@
 function TasksFilter({ filter, setFilter }) {
   return (
     <ul className="filters">
+   
       <li>
         <button
           className={filter === "All" ? "selected" : ""}
