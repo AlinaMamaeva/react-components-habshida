@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+import { formatDistanceToNow } from "date-fns";
+import PropTypes from "prop-types";
 
 function Task(props) {
-  const { task, toggleStatus, deleteTask, updateTask, toggleEdit, isEditing } = props;
+  const { task, toggleStatus, deleteTask, updateTask, toggleEdit, isEditing } =
+    props;
 
   const [value, setValue] = useState(task.title);
 
@@ -12,10 +15,7 @@ function Task(props) {
   return (
     <li
       className={`${task.completed ? "completed" : ""} ${isEditing ? "editing" : ""}`}
-      
-      
     >
-     
       <div className="view">
         <input
           className="toggle"
@@ -26,7 +26,14 @@ function Task(props) {
 
         <label>
           <span className="title">{task.title}</span>
-          <span className="created"> {task.createdAt} </span>
+
+          <span className="created">
+            created{" "}
+            {formatDistanceToNow(new Date(task.createdAt), {
+              addSuffix: true,
+              includeSeconds: true,
+            })}{" "}
+          </span>
         </label>
 
         <button
@@ -48,17 +55,33 @@ function Task(props) {
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-            e.preventDefault();
+              e.preventDefault();
               updateTask(task.id, value);
-            
             }
-           if(e.key == "Escape") {
-               toggleEdit(task.id);
-           }
+            if (e.key == "Escape") {
+              toggleEdit(task.id);
+            }
           }}
         />
       )}
     </li>
   );
 }
+
+Task.propTypes = {
+  task: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    completed: PropTypes.bool.isRequired,
+    createdAt: PropTypes.string.isRequired,
+  }).isRequired,
+
+  toggleStatus: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired,
+  updateTask: PropTypes.func.isRequired,
+  toggleEdit: PropTypes.func.isRequired,
+  isEditing: PropTypes.bool,
+};
+
+
 export default Task;

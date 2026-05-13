@@ -14,8 +14,7 @@ function App() {
   const [tasks, setTasks] = useState(
     initialTasks.map((task) => ({
       ...task,
-      createdAt: new Date().toLocaleTimeString(),
-      
+      createdAt: new Date().toISOString(),
     })),
   );
 
@@ -40,15 +39,13 @@ function App() {
   const updateTask = (id, newTitle) => {
     setTasks((prev) =>
       prev.map((task) =>
-        task.id === id ? { ...task, title: newTitle} : task,
+        task.id === id ? { ...task, title: newTitle } : task,
       ),
     );
     setEditingTaskId(null);
   };
   const toggleEdit = (id) => {
-    setEditingTaskId((prev) => (prev === id ? null : id)
-      
-    );
+    setEditingTaskId((prev) => (prev === id ? null : id));
   };
 
   const addTask = (text) => {
@@ -57,10 +54,10 @@ function App() {
       title: text,
       // status: "active",
       completed: false,
-     // isEditing: false,
-      createdAt: new Date().toLocaleTimeString(),
+      // isEditing: false,
+      createdAt: new Date().toISOString(),
     };
-    setTasks((prev) => [ newTask, ...prev]);
+    setTasks((prev) => [newTask, ...prev]);
   };
 
   const [filter, setFilter] = useState("All");
@@ -73,8 +70,8 @@ function App() {
   const activeTasks = tasks.filter((task) => !task.completed).length;
 
   const clearCompleted = () => {
-    console.log('before', tasks);
-    
+    console.log("before", tasks);
+
     setTasks((prev) => prev.filter((task) => !task.completed));
   };
 
@@ -88,13 +85,12 @@ function App() {
         deleteTask={deleteTask}
         updateTask={updateTask}
         toggleEdit={toggleEdit}
-        editingTaskId= {editingTaskId}
+        editingTaskId={editingTaskId}
       />
 
       <Footer clearCompleted={clearCompleted} activeTasks={activeTasks}>
-      <TasksFilter filter={filter} setFilter={setFilter} />
+        <TasksFilter filter={filter} setFilter={setFilter} />
       </Footer>
-
     </section>
   );
 }

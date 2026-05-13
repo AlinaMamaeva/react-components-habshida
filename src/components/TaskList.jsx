@@ -1,4 +1,5 @@
 import Task from "./Task";
+import PropTypes from "prop-types";
 
 function TaskList({
   tasks,
@@ -25,5 +26,19 @@ function TaskList({
       </ul>
     </section>
   );
+}
+
+TaskList.propTypes = {
+  tasks: PropTypes.array.isRequired,
+  toggleStatus: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired,
+   updateTask:PropTypes.func.isRequired,
+  toggleEdit: PropTypes.func.isRequired,
+  editingTaskId: PropTypes.number.isRequired,
+
+};
+TaskList.defaultProps = {
+  tasks: [],
+  editingTaskId: null,
 }
 export default TaskList;

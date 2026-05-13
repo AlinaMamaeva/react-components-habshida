@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 
 
 function Footer({ clearCompleted, activeTasks, children}) {
@@ -19,5 +20,13 @@ function Footer({ clearCompleted, activeTasks, children}) {
     </footer>
   );
 }
-
+Footer.propTypes = {
+  clearCompleted: PropTypes.func.isRequired,
+   activeTasks: PropTypes.number,
+    children: PropTypes.node,
+}
+Footer.defaultProps = {
+  activeTasks: 0,
+  children: null,
+}
 export default Footer;
